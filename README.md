@@ -1,4 +1,4 @@
-# Maven-Market-Analytics
+# Maven-Market-Dashboard
 ## Project Goal
 The Maven Market project is a detailed sales analysis focused on the performance of Maven Market’s grocery business in 1998. The primary goal is to examine top-level metrics on product brand performance, customer behavior patterns, and store performance across all countries where Maven Market operates. This analysis provides insights into key trends and helps identify areas for growth and improvement across different regions.
 
