@@ -1,0 +1,137 @@
+# DAX Functions
+To enhance data analysis and derive meaningful insights, I wrote the following DAX functions to create measures and calculated columns tailored to the project’s needs.
+## Base Metrics: This includes the following;
+* Total Sales = 
+SUMX(Transaction_Data, 
+       Transaction_Data[Quantity] * RELATED(Products[Product_Retail_Price])
+)
+
+* Weekend Sales = 
+CALCULATE( [Total Sales],
+     FILTER('Calendar', 'Calendar'[Weekend] = "Y")
+)
+
+* Total Cost = 
+SUMX(Transaction_Data, 
+     RELATED(Products[Product_Cost]) *  Transaction_Data[Quantity]
+)
+
+* Profit = [Total Revenue] - [Total Cost]
+
+* Count of Transactions = COUNTROWS(Transaction_Data)
+
+* Count of Returns = COUNTROWS(Returns_Data)
+
+* Count of Customers = COUNTROWS(Customers)
+
+* Store Count = COUNT(Stores[Store_ID])
+
+* All Returns = 
+CALCULATE([Total Returns], ALL(Returns_Data)
+)
+
+* Total Quantity Sold = SUM(Transaction_Data[Quantity])
+
+* Total Quantity Returned = SUM(Returns_Data[Quantity])
+
+## Percentage Metrics:
+* Profit Margin = 
+DIVIDE([Profit], [Total Sales])
+
+* Return Rate = 
+Divide([Total Quantity Returned], [Total Quantity Sold])
+
+## Time Intelligence Metrics:
+* Revenue YTD =
+TOTALQTD([Total Sales],'Calendar'[Date])
+
+*  Profit YTD =
+TOTALQTD([Profit], 'Calendar'[Date])
+
+* 60-Days Running Total = 
+CALCULATE([Total Sales],
+    DATESINPERIOD('Calendar'[Date], MAX('Calendar'[Date]), -60, DAY)
+)
+
+* Prior Month Sales = 
+CALCULATE([Total Sales], 
+     PARALLELPERIOD('Calendar'[Date], -1, MONTH)
+)
+
+* Prior Month Profit = 
+CALCULATE([Profit], 
+     PARALLELPERIOD('Calendar'[Date], -1, MONTH)
+)
+
+* Prior Month Returns = 
+CALCULATE([Count of Returns], 
+     PARALLELPERIOD('Calendar'[Date], -1, MONTH)
+)
+
+* Sales Target = [Prior Month Sales] * 1.05
+
+## Calculated Columns:
+* End of Month = EOMONTH('Calendar'[Date],0)
+
+* Weekday = WEEKDAY('Calendar'[Date], 1)
+
+* Weekend = IF('Calendar'[Day_Name] IN {"Saturday", "Sunday"}, "Y", "N")
+
+* Day Type = 
+IF('Calendar'[Weekend] = "Y", "Weekend", "Weekday")
+
+* Age = 
+DATEDIFF(Customers[Birthdate], TODAY(), YEAR)
+
+* Gender_Label = 
+IF(Customers[Gender] = "F", "Female", "Male")
+
+* Marital_Label = 
+IF(Customers[Marital_Status] = "M", "Married", "Single")
+
+* House_Number = 
+LEFT(Customers[Customer_Address],
+            SEARCH(" ", Customers[Customer_Address], 1)-1
+)
+
+* Is_Low_fat = 
+IF(Products[Low_Fat] = 1, "Low Fat", "High Fat")
+
+* Priority = 
+IF(Customers[Home_Owner] = "Y" && Customers[Member_Card] = "Golden", "High", "Standard")
+
+* Price_Tier = 
+IF(Products[Product_Retail_Price] > 3, "High", 
+    IF(Products[Product_Retail_Price] > 1, "Mid", "Low")
+)
+
+
+## Color
+* GuagefillColor = 
+IF( [Total Sales] >= [Revenue Target],
+"#034E37", "#FF0000"
+)
+
+* TargetColor = 
+IF([Revenue Target] >= 0,
+    UNICHAR(9650) & " " & FORMAT([Revenue Target], "0.00%"),
+    UNICHAR(9660) & " " & FORMAT([Revenue Target], "0.00%")
+)
+
+
+
+## Calculation Groups:
+* Current = SELECTEDMEASURE()
+
+* 60-Days Running Total = 
+CALCULATE(SELECTEDMEASURE(), 
+          DATESINPERIOD('Calendar'[Date], MAX('Calendar'[Date]), -60, DAY)
+)
+
+* YTD = 
+TOTALYTD(SELECTEDMEASURE(), 'Calendar'[Date])
+
+* Prior Month = 
+CALCULATE(SELECTEDMEASURE(), 
+        DATEADD('Calendar'[Date], -1, MONTH)
+)
