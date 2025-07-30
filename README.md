@@ -1,4 +1,6 @@
 # Maven-Market-Analytics
+## 📊📈 Interactive Power BI Dashboard
+[Click the link to view the live Power BI dashboard](https://app.fabric.microsoft.com/view?r=eyJrIjoiN2ZiNmVkZWUtN2Y2Mi00Nzk2LWE2ZWQtNzVlNTFmMjM3ZWNiIiwidCI6ImM0MDEzMThlLTEzYmUtNGQ3MS05OGMxLWViNzZjNDAwMjQ1NSJ9)
 ## Project Goal
 The Maven Market project is a detailed sales analysis focused on the performance of Maven Market’s grocery business in 1998. The primary goal is to examine top-level metrics on product brand performance, customer behavior patterns, and store performance across all countries where Maven Market operates. This analysis provides insights into key trends and helps identify areas for growth and improvement across different regions.
 
